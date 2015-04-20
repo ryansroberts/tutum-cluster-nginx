@@ -95,13 +95,13 @@ class NginxProxy(object):
         template = template_env.get_template(self.template_config)
 
         logger.debug('Backend dict: {}'.format(pformat(backend_routes_dict)))
-        context_dict = self.genorate_context(backend_routes_dict)
+        context_dict = self.generate_context(backend_routes_dict)
         output_text = template.render(context=context_dict)
 
         logger.debug(output_text)
         return output_text
 
-    def genorate_context(self, backend_routes_dict):
+    def generate_context(self, backend_routes_dict):
         config_context = {}
         config_context["backend"] = {}
         if self.virtual_hosts:
@@ -116,7 +116,7 @@ class NginxProxy(object):
                     if container_name == service_name and address_info_string not in config_context['backend'][
                         domain_name]:
                         if DEBUG:
-                            logger.info('Appending cn: [{}] domain: [{}] addr: [{}]'.format(container_name, domain_name,
+                            logger.info('Appending service [{}] cn: [{}] domain: [{}] addr: [{}]'.format(service_name,container_name, domain_name,
                                                                                address_info_string))
                         config_context['backend'][domain_name].append(address_info_string)
         else:
